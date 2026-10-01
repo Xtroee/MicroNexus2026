@@ -1,0 +1,191 @@
+fileFormatVersion: 2
+guid: ecfb52d5d5601e04085078561362ae70
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1434697755310902448
+    second: throw12_0
+  - first:
+      213: -6113887142610556064
+    second: throw12_1
+  - first:
+      213: 6775496034357119931
+    second: throw12_2
+  - first:
+      213: 3851360905769641107
+    second: throw12_3
+  - first:
+      213: -2453588188631987155
+    second: throw12_4
+  - first:
+      213: -4838295891261900270
+    second: throw12_5
+  - first:
+      213: -5521541558189539529
+    second: throw12_6
+  - first:
+      213: 8682016985454021355
+    second: throw12_7
+  - first:
+      213: -1301800363011491746
+    second: throw12_8
+  - first:
+      213: 5480297907773671901
+    second: throw12_9
+  - first:
+      213: -4595557501080928310
+    second: throw12_10
+  - first:
+      213: 8681094202470964055
+    second: throw12_11
+  - first:
+      213: -2153251319698743757
+    second: throw12_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: throw12_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 960
+        height: 960
+      alignment: 9
+      pivot: {x: 0.5072917, y: 0.19479166}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06baedb590c172ba0800000000000000
+      internalID: -6113887142610556064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      throw12_0: -1434697755310902448
+      throw12_1: -6113887142610556064
+      throw12_10: -4595557501080928310
+      throw12_11: 8681094202470964055
+      throw12_12: -2153251319698743757
+      throw12_2: 6775496034357119931
+      throw12_3: 3851360905769641107
+      throw12_4: -2453588188631987155
+      throw12_5: -4838295891261900270
+      throw12_6: -5521541558189539529
+      throw12_7: 8682016985454021355
+      throw12_8: -1301800363011491746
+      throw12_9: 5480297907773671901
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

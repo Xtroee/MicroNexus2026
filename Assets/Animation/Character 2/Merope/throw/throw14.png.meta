@@ -1,0 +1,207 @@
+fileFormatVersion: 2
+guid: 1e7082877f0c39540a6107c52b8786b4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2104064731961872344
+    second: throw14_0
+  - first:
+      213: 3057994936587091072
+    second: throw14_1
+  - first:
+      213: -2102262717232709514
+    second: throw14_2
+  - first:
+      213: 6859867113272658980
+    second: throw14_3
+  - first:
+      213: 7259310128653833749
+    second: throw14_4
+  - first:
+      213: 3392151553722981432
+    second: throw14_5
+  - first:
+      213: 822058649311440508
+    second: throw14_6
+  - first:
+      213: 1990993480342262487
+    second: throw14_7
+  - first:
+      213: 1270414802171699019
+    second: throw14_8
+  - first:
+      213: -307320314090603698
+    second: throw14_9
+  - first:
+      213: 1296434788147706489
+    second: throw14_10
+  - first:
+      213: 872903281423297187
+    second: throw14_11
+  - first:
+      213: 1648538050789077888
+    second: throw14_12
+  - first:
+      213: -5662449371709866334
+    second: throw14_13
+  - first:
+      213: 4776118175067495179
+    second: throw14_14
+  - first:
+      213: -8953587870355121133
+    second: throw14_15
+  - first:
+      213: -1416789975693098103
+    second: throw14_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: throw14_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 960
+        height: 960
+      alignment: 9
+      pivot: {x: 0.5072917, y: 0.19479166}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83c92ff9dd7531f20800000000000000
+      internalID: 3392151553722981432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      throw14_0: -2104064731961872344
+      throw14_1: 3057994936587091072
+      throw14_10: 1296434788147706489
+      throw14_11: 872903281423297187
+      throw14_12: 1648538050789077888
+      throw14_13: -5662449371709866334
+      throw14_14: 4776118175067495179
+      throw14_15: -8953587870355121133
+      throw14_16: -1416789975693098103
+      throw14_2: -2102262717232709514
+      throw14_3: 6859867113272658980
+      throw14_4: 7259310128653833749
+      throw14_5: 3392151553722981432
+      throw14_6: 822058649311440508
+      throw14_7: 1990993480342262487
+      throw14_8: 1270414802171699019
+      throw14_9: -307320314090603698
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

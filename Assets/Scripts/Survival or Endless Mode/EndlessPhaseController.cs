@@ -1,0 +1,446 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+
+public class EndlessPhaseController : MonoBehaviour
+{
+    [Header("Camera (2D)")]
+    [SerializeField] private Transform cameraTransform;
+    [SerializeField] private float selectCameraX = 6.5f;
+    [SerializeField] private float playCameraX = 0f;
+    [SerializeField] private float cameraMoveSpeed = 3f;
+
+    [Header("Spawner Endless")]
+    [SerializeField] private BacteriaSpawnerEndless spawner;
+
+    [Header("UI Ref")]
+    [SerializeField] private EndlessUIController ui;
+
+    [Header("Wave Manager")]
+    [SerializeField] private EndlessWaveManager waveManager;
+
+    [Header("Ready Button Ref (Script)")]
+    [SerializeField] private ReadyButton readyButton;
+
+    [Header("Ready Button OBJ (GameObject)")]
+    [SerializeField] private GameObject readyButtonObj;
+
+    [Header("Selection Manager")]
+    [SerializeField] private CardSelectionManager cardManager;
+
+    [Header("Enemy Preview Helper")]
+    [SerializeField] private SpawnPreviewHelper preview;
+
+    [Header("Objects Active On Select")]
+    [SerializeField] private List<GameObject> selectActive = new List<GameObject>();
+
+    [Header("Objects Active On Play")]
+    [SerializeField] private List<GameObject> playActive = new List<GameObject>();
+
+    // =====================================================
+    // NEW (SUNNAH) — SELECT SLOT & PLAY SLOT
+    // =====================================================
+
+    [Header("Objects Active On Select Slot (Sunnah)")]
+    [SerializeField] private List<GameObject> selectSlot = new List<GameObject>();
+
+    [Header("Objects Active On Play Slot (Sunnah)")]
+    [SerializeField] private List<GameObject> playSlot = new List<GameObject>();
+
+    // =====================================================
+    // NEW — SAFETY: RESET WaveManager.isGameOver (ENDLESS MODE)
+    // =====================================================
+
+    [Header("WaveManager Safety (Endless)")]
+    [Tooltip("Jika true, EndlessPhaseController akan memastikan WaveManager.isGameOver tidak nyangkut TRUE saat masuk SELECT/PLAY.")]
+    [SerializeField] private bool forceResetWaveManagerGameOver = true;
+
+    // =====================================================
+    // SUNNAH — CACHE GameManager (untuk reset selection per phase)
+    // =====================================================
+
+    private GameManager gms;
+
+    private void Start()
+    {
+        Debug.Log("<color=cyan>[PHASE] Scene START → SELECT phase</color>");
+
+        // SUNNAH cache GameManager (tidak mengubah behaviour lain)
+        gms = FindFirstObjectByType<GameManager>();
+
+        // NEW — CHECK & FIX GAMEOVER STATE ON SELECT START
+        EnsureWaveManagerNotGameOver("START/SELECT");
+
+        SnapCamera(selectCameraX);
+        ApplySelectObjects();
+
+        // DEBUG (SELECT MOMENT)
+        PhaseDebug("AFTER ApplySelectObjects (START)");
+
+        if (ui != null)
+            ui.EnterSelectPhase();
+
+        if (cardManager != null)
+            cardManager.ReEnterSelectPhase();
+
+        if (readyButtonObj != null)
+        {
+            readyButtonObj.SetActive(true);
+            Debug.Log("<color=green>[PHASE] READY → ENABLE (SELECT AWAL)</color>");
+        }
+
+        if (readyButton != null)
+            readyButton.SetReadyEnabled(true);
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.StopBgmLoop();
+        }
+    }
+
+    public IEnumerator StartPlayPhase()
+    {
+        Debug.Log("<color=orange>[PHASE] StartPlayPhase called</color>");
+
+        // NEW — CHECK & FIX GAMEOVER STATE BEFORE MOVING TO PLAY
+        EnsureWaveManagerNotGameOver("BEFORE PLAY MOVE");
+
+        Debug.Log("<color=grey>[PHASE] Camera SELECT → PLAY moving...</color>");
+        yield return MoveCameraSmooth(playCameraX);
+
+        Debug.Log("<color=lime>[PHASE] Camera arrived at PLAY</color>");
+
+        ApplyPlayObjects();
+
+        // NEW — CHECK & FIX GAMEOVER STATE AFTER PLAY OBJECTS ENABLED
+        EnsureWaveManagerNotGameOver("AFTER ApplyPlayObjects (PLAY)");
+
+        // DEBUG (PLAY MOMENT)
+        PhaseDebug("AFTER ApplyPlayObjects (PLAY)");
+
+        if (readyButtonObj != null)
+        {
+            readyButtonObj.SetActive(false);
+            Debug.Log("<color=red>[PHASE] READY → DISABLE (Arrive PLAY)</color>");
+        }
+
+        if (ui != null)
+            ui.OnPlayPhaseStart();
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.StopBgmLoop();
+            SoundManager.Instance.PlayBgmLoop();
+        }
+
+        if (preview != null && waveManager != null)
+        {
+            var pool = preview.GetSelectedEnemyPool();
+            spawner.SetEnemyPool(pool);
+            Debug.Log("<color=yellow>[PHASE] Enemy pool injected to WaveManager</color>");
+        }
+
+        if (waveManager != null)
+        {
+            Debug.Log("<color=magenta>[PHASE] Starting RunSingleCycle coroutine</color>");
+            waveManager.StartCoroutine(waveManager.RunSingleCycle());
+        }
+        else
+        {
+            Debug.LogError("<color=red>[PHASE] WaveManager is NULL!</color>");
+        }
+    }
+
+    public IEnumerator SmoothBackToSelect()
+    {
+        Debug.Log("<color=grey>[PHASE] Camera PLAY → SELECT moving...</color>");
+
+        if (readyButtonObj != null)
+            Debug.Log("<color=red>[PHASE] READY tetap DISABLE (Back SELECT move)</color>");
+
+        yield return MoveCameraSmooth(selectCameraX);
+
+        Debug.Log("<color=lime>[PHASE] Camera arrived at SELECT</color>");
+
+        ApplySelectObjects();
+
+        // NEW — CHECK & FIX GAMEOVER STATE WHEN BACK TO SELECT
+        EnsureWaveManagerNotGameOver("BACK TO SELECT");
+
+        // DEBUG (SELECT MOMENT)
+        PhaseDebug("AFTER ApplySelectObjects (BACK)");
+
+        ClearAllTiles();
+        ClearAllAtoms();
+
+        if (cardManager != null)
+            cardManager.ReEnterSelectPhase();
+
+        if (preview != null)
+            preview.GeneratePreviewWithMinDifference();
+
+        if (readyButtonObj != null)
+        {
+            readyButtonObj.SetActive(true);
+            Debug.Log("<color=green>[PHASE] READY → ENABLE (Arrive SELECT)</color>");
+        }
+
+        if (readyButton != null)
+            readyButton.SetReadyEnabled(true);
+
+        if (ui != null)
+            ui.EnterSelectPhase();
+
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.StopBgmLoop();
+    }
+
+    private void ApplySelectObjects()
+    {
+        // ORIGINAL BEHAVIOUR (TIDAK DIUBAH)
+        foreach (var o in selectActive)
+        {
+            if (!o) continue;
+            o.SetActive(true);
+            Debug.Log($"<color=cyan>[PHASE] SELECT ON → {o.name}</color>");
+        }
+
+        foreach (var o in playActive)
+        {
+            if (!o) continue;
+            o.SetActive(false);
+            Debug.Log($"<color=cyan>[PHASE] PLAY OFF → {o.name}</color>");
+        }
+
+        // NEW — SELECT SLOT (SUNNAH)
+        if (selectSlot != null)
+        {
+            foreach (var o in selectSlot)
+            {
+                if (!o) continue;
+                o.SetActive(true);
+                Debug.Log($"<color=green>[PHASE] SELECT SLOT ON → {o.name}</color>");
+            }
+        }
+
+        if (playSlot != null)
+        {
+            foreach (var o in playSlot)
+            {
+                if (!o) continue;
+                o.SetActive(false);
+                Debug.Log($"<color=green>[PHASE] PLAY SLOT OFF → {o.name}</color>");
+            }
+        }
+
+        // =====================================================
+        // SUNNAH — FORCE RESTORE CapsuleSlot VISUAL (SELECT PHASE)
+        // =====================================================
+        CapsuleSlot[] slots =
+            Object.FindObjectsByType<CapsuleSlot>(FindObjectsSortMode.None);
+
+        foreach (var slot in slots)
+        {
+            slot.ForceRestoreOriginalColorFromPhase();
+        }
+
+        // =====================================================
+        // SUNNAH — RESET SELECTION DI GameManager (SELECT PHASE)
+        // (pilihan harus kosong saat SELECT)
+        // =====================================================
+        if (gms != null)
+        {
+            gms.ForceResetSelectionFromPhase("SELECT PHASE");
+        }
+    }
+
+    private void ApplyPlayObjects()
+    {
+        // ORIGINAL BEHAVIOUR (TIDAK DIUBAH)
+        foreach (var o in selectActive)
+        {
+            if (!o) continue;
+            o.SetActive(false);
+            Debug.Log($"<color=yellow>[PHASE] SELECT OFF → {o.name}</color>");
+        }
+
+        foreach (var o in playActive)
+        {
+            if (!o) continue;
+            o.SetActive(true);
+            Debug.Log($"<color=yellow>[PHASE] PLAY ON → {o.name}</color>");
+        }
+
+        // NEW — SELECT SLOT (SUNNAH)
+        if (selectSlot != null)
+        {
+            foreach (var o in selectSlot)
+            {
+                if (!o) continue;
+                o.SetActive(false);
+                Debug.Log($"<color=orange>[PHASE] SELECT SLOT OFF → {o.name}</color>");
+            }
+        }
+
+        if (playSlot != null)
+        {
+            foreach (var o in playSlot)
+            {
+                if (!o) continue;
+                o.SetActive(true);
+                Debug.Log($"<color=orange>[PHASE] PLAY SLOT ON → {o.name}</color>");
+            }
+        }
+
+        // =====================================================
+        // SUNNAH — RESET SELECTION DI GameManager (PLAY PHASE)
+        // (sesuai request: masuk PLAY juga tidak ada yang “terklik”)
+        // =====================================================
+        if (gms != null)
+        {
+            gms.ForceResetSelectionFromPhase("PLAY PHASE");
+        }
+    }
+
+    private void SnapCamera(float x)
+    {
+        if (!cameraTransform)
+        {
+            Debug.LogError("<color=red>[PHASE] Missing cameraTransform!</color>");
+            return;
+        }
+
+        cameraTransform.position = new Vector3(
+            x,
+            cameraTransform.position.y,
+            cameraTransform.position.z
+        );
+
+        Debug.Log($"<color=teal>[PHASE] Camera SNAP to X={x}</color>");
+    }
+
+    private IEnumerator MoveCameraSmooth(float targetX)
+    {
+        if (!cameraTransform)
+        {
+            Debug.LogError("<color=red>[PHASE] Missing cameraTransform!</color>");
+            yield break;
+        }
+
+        while (true)
+        {
+            Vector3 p = cameraTransform.position;
+            float newX = Mathf.Lerp(p.x, targetX, Time.deltaTime * cameraMoveSpeed);
+            cameraTransform.position = new Vector3(newX, p.y, p.z);
+
+            if (Mathf.Abs(newX - targetX) < 0.05f)
+                break;
+
+            yield return null;
+        }
+
+        cameraTransform.position = new Vector3(
+            targetX,
+            cameraTransform.position.y,
+            cameraTransform.position.z
+        );
+    }
+
+    private void ClearAllTiles()
+    {
+        Tile[] tiles = Object.FindObjectsByType<Tile>(FindObjectsSortMode.None);
+
+        foreach (var t in tiles)
+        {
+            if (t.currentCapsule != null)
+                Destroy(t.currentCapsule);
+
+            t.ClearCapsule();
+        }
+
+        Debug.Log("<color=magenta>[PHASE] Semua tile CLEARED untuk fase SELECT</color>");
+    }
+
+    private void ClearAllAtoms()
+    {
+        Atom[] atoms = Object.FindObjectsByType<Atom>(FindObjectsSortMode.None);
+
+        foreach (var a in atoms)
+            Destroy(a.gameObject);
+
+        Debug.Log("<color=magenta>[PHASE] Semua ATOM dihapus (SELECT)</color>");
+    }
+
+    // =====================================================
+    // NEW — DEBUG HELPER (NO BEHAVIOUR CHANGE)
+    // =====================================================
+    private void PhaseDebug(string context)
+    {
+        Debug.Log($"<color=white>[PHASE DEBUG] ({context})</color> WaveManager.isGameOver = <color=yellow>{WaveManager.isGameOver}</color>");
+        Debug.Log($"<color=white>[PHASE DEBUG] ({context})</color> PauseManager.IsPaused = <color=yellow>{PauseManager.IsPaused}</color>");
+        Debug.Log($"<color=white>[PHASE DEBUG] ({context})</color> Time.timeScale = <color=yellow>{Time.timeScale}</color>");
+    }
+
+    // =====================================================
+    // NEW — SAFETY FIX FOR ENDLESS MODE
+    // =====================================================
+    private void EnsureWaveManagerNotGameOver(string context)
+    {
+        if (!forceResetWaveManagerGameOver)
+            return;
+
+        if (!WaveManager.isGameOver)
+            return;
+
+        Debug.LogWarning($"<color=red>[PHASE FIX]</color> WaveManager.isGameOver TRUE saat {context}. Mencoba reset ke FALSE agar input tidak mati.");
+
+        bool resetSuccess = TryForceSetWaveManagerGameOverFalseByReflection();
+
+        if (!resetSuccess)
+        {
+            Debug.LogError("<color=red>[PHASE FIX]</color> Gagal reset WaveManager.isGameOver via reflection. " +
+                           "Solusi paling bersih: nonaktifkan GameObject WaveManager di scene Endless atau buat method reset di WaveManager.");
+        }
+        else
+        {
+            Debug.Log($"<color=green>[PHASE FIX]</color> WaveManager.isGameOver berhasil di-reset → {WaveManager.isGameOver}");
+        }
+    }
+
+    private bool TryForceSetWaveManagerGameOverFalseByReflection()
+    {
+        try
+        {
+            var t = typeof(WaveManager);
+
+            FieldInfo f =
+                t.GetField("isGameOver", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+
+            if (f != null && f.FieldType == typeof(bool))
+            {
+                f.SetValue(null, false);
+                return true;
+            }
+
+            PropertyInfo p =
+                t.GetProperty("isGameOver", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+
+            if (p != null && p.PropertyType == typeof(bool))
+            {
+                var setMethod = p.GetSetMethod(true);
+                if (setMethod != null)
+                {
+                    setMethod.Invoke(null, new object[] { false });
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+}

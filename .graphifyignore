@@ -1,0 +1,10 @@
+# Unity generated/cache dirs - bukan source code, jangan di-scan graphify
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+UserSettings/
+MemoryCaptures/
+.vs/
