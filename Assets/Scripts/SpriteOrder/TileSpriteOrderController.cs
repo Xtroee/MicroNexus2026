@@ -61,6 +61,13 @@ public class TileSpriteOrderController : MonoBehaviour
 
         foreach (SpriteRenderer sr in spriteRenderers)
         {
+            // GetComponentsInChildren ikut menangkap SpriteRenderer milik Tile itu sendiri
+            // (overlay putih transparan). Kalau ikut dinaikkan ke order yang sama dengan
+            // capsule, overlay bisa menutupi capsule (terlihat pucat). Biarkan overlay tetap
+            // di order aslinya supaya selalu berada di bawah capsule.
+            if (sr.gameObject == gameObject)
+                continue;
+
             sr.sortingOrder = targetOrderInLayer;
             appliedCount++;
 

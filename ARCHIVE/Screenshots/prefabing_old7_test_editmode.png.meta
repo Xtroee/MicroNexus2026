@@ -1,0 +1,507 @@
+fileFormatVersion: 2
+guid: f53efb9df2e539a48a8887fefed9d3a4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3280971079134111589
+    second: prefabing_old7_test_editmode_0
+  - first:
+      213: -3178236976036589660
+    second: prefabing_old7_test_editmode_1
+  - first:
+      213: 1972279423352925820
+    second: prefabing_old7_test_editmode_2
+  - first:
+      213: -7610556813502315697
+    second: prefabing_old7_test_editmode_3
+  - first:
+      213: 7111381721210939055
+    second: prefabing_old7_test_editmode_4
+  - first:
+      213: 6025908063657995676
+    second: prefabing_old7_test_editmode_5
+  - first:
+      213: 1780044680113125480
+    second: prefabing_old7_test_editmode_6
+  - first:
+      213: -834882638035732022
+    second: prefabing_old7_test_editmode_7
+  - first:
+      213: 7229204647438871888
+    second: prefabing_old7_test_editmode_8
+  - first:
+      213: -8032966156872280643
+    second: prefabing_old7_test_editmode_9
+  - first:
+      213: 2389483341328846967
+    second: prefabing_old7_test_editmode_10
+  - first:
+      213: 6034083056369289652
+    second: prefabing_old7_test_editmode_11
+  - first:
+      213: -109367315017287553
+    second: prefabing_old7_test_editmode_12
+  - first:
+      213: 3403551947261420489
+    second: prefabing_old7_test_editmode_13
+  - first:
+      213: -6397982474499739074
+    second: prefabing_old7_test_editmode_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_0
+      rect:
+        serializedVersion: 2
+        x: 242
+        y: 622
+        width: 112
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9891e5df26a772d0800000000000000
+      internalID: -3280971079134111589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_1
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 622
+        width: 103
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4afc35f2f42a4e3d0800000000000000
+      internalID: -3178236976036589660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_2
+      rect:
+        serializedVersion: 2
+        x: 913
+        y: 623
+        width: 92
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7e63ca9fa1fe5b10800000000000000
+      internalID: 1972279423352925820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_3
+      rect:
+        serializedVersion: 2
+        x: 1227
+        y: 626
+        width: 106
+        height: 179
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f43044c86eed16690800000000000000
+      internalID: -7610556813502315697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_4
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 271
+        width: 109
+        height: 183
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa6ebfa6ff3b0b260800000000000000
+      internalID: 7111381721210939055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_5
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 271
+        width: 96
+        height: 179
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9d2f7f057350a350800000000000000
+      internalID: 6025908063657995676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_6
+      rect:
+        serializedVersion: 2
+        x: 906
+        y: 272
+        width: 99
+        height: 191
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 868777a943df3b810800000000000000
+      internalID: 1780044680113125480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_7
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 27
+        width: 134
+        height: 191
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac93db20aa6e964f0800000000000000
+      internalID: -834882638035732022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_8
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 27
+        width: 146
+        height: 190
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05d623b235b435460800000000000000
+      internalID: 7229204647438871888
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_9
+      rect:
+        serializedVersion: 2
+        x: 639
+        y: 27
+        width: 102
+        height: 190
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db594ee37db258090800000000000000
+      internalID: -8032966156872280643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_10
+      rect:
+        serializedVersion: 2
+        x: 892
+        y: 27
+        width: 133
+        height: 174
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7709e9c5076292120800000000000000
+      internalID: 2389483341328846967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_11
+      rect:
+        serializedVersion: 2
+        x: 1172
+        y: 27
+        width: 122
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b94810e19e5db350800000000000000
+      internalID: 6034083056369289652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_12
+      rect:
+        serializedVersion: 2
+        x: 1448
+        y: 27
+        width: 105
+        height: 188
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f783b56a1037b7ef0800000000000000
+      internalID: -109367315017287553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_13
+      rect:
+        serializedVersion: 2
+        x: 1707
+        y: 168
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c32b179678db3f20800000000000000
+      internalID: 3403551947261420489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: prefabing_old7_test_editmode_14
+      rect:
+        serializedVersion: 2
+        x: 1715
+        y: 27
+        width: 113
+        height: 179
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e32b44066dcc537a0800000000000000
+      internalID: -6397982474499739074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      prefabing_old7_test_editmode_0: -3280971079134111589
+      prefabing_old7_test_editmode_1: -3178236976036589660
+      prefabing_old7_test_editmode_10: 2389483341328846967
+      prefabing_old7_test_editmode_11: 6034083056369289652
+      prefabing_old7_test_editmode_12: -109367315017287553
+      prefabing_old7_test_editmode_13: 3403551947261420489
+      prefabing_old7_test_editmode_14: -6397982474499739074
+      prefabing_old7_test_editmode_2: 1972279423352925820
+      prefabing_old7_test_editmode_3: -7610556813502315697
+      prefabing_old7_test_editmode_4: 7111381721210939055
+      prefabing_old7_test_editmode_5: 6025908063657995676
+      prefabing_old7_test_editmode_6: 1780044680113125480
+      prefabing_old7_test_editmode_7: -834882638035732022
+      prefabing_old7_test_editmode_8: 7229204647438871888
+      prefabing_old7_test_editmode_9: -8032966156872280643
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

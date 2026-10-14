@@ -86,7 +86,7 @@ public class ChangeUserPanel : MonoBehaviour
     {
         var img = obj.GetComponent<Image>();
         if (img)
-            img.color = active ? new Color(0.3f, 1f, 0.3f) : Color.white;
+            img.color = active ? new Color(0.25f, 0.72f, 0.74f, 0.95f) : new Color(0.1f, 0.14f, 0.3f, 0.95f);
     }
 
     // ====== BUTTON LOGIC ======

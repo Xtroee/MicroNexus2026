@@ -42,40 +42,30 @@ public class FinalResultDisplay : MonoBehaviour
                 : (!string.IsNullOrEmpty(GameData.Data.PlayerName) ? GameData.Data.PlayerName : "Player");
 
         if (finalFlagText)
-            finalFlagText.text = $"total final flag : {flags}";
+            finalFlagText.text = $"WAVE REACHED   {flags}";
 
         if (finalNucleusText)
-            finalNucleusText.text = $"total nucleus remain : {nucleus}";
+            finalNucleusText.text = $"NUCLEUS LEFT   {nucleus}";
 
         if (finalSunsText)
-            finalSunsText.text = $"total suns earned : {suns}";
+            finalSunsText.text = $"ENERGY EARNED   {suns}";
 
         if (finalScoreText)
-            finalScoreText.text = $"total score : {score}";
+            finalScoreText.text = $"TOTAL SCORE   {score}";
 
         if (finalPlayerNameText)
-            finalPlayerNameText.text = $"player : {playerName}";
+            finalPlayerNameText.text = playerName;
 
         if (leaderboardRankText)
         {
             // rank biasanya 0-based dari HighscoreTable.Insert()
             // Kalau rank belum pernah di-set (misal -1), jangan bikin pesan "ke-0"
             if (rank < 0)
-            {
-                leaderboardRankText.text =
-                    "skor di leaderboard yang di tampilkan hanya urutan 1 sampai 10 : (rank belum tersedia)";
-            }
+                leaderboardRankText.text = "Peringkat belum tersedia";
+            else if (rank >= 10)
+                leaderboardRankText.text = $"Peringkat #{rank + 1}  -  di luar 10 besar";
             else
-            {
-                string msg = $"skor di leaderboard yang di tampilkan hanya urutan 1 sampai 10 : kamu urutan ke-{rank + 1}";
-
-                if (rank >= 10)
-                    msg += "\n(kamu tidak masuk 10 besar)";
-                else
-                    msg += "\n(kamu masuk 10 besar)";
-
-                leaderboardRankText.text = msg;
-            }
+                leaderboardRankText.text = $"Peringkat #{rank + 1}  -  masuk 10 besar!";
         }
     }
 }

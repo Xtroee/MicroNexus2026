@@ -58,6 +58,18 @@ public class LevelMapController : MonoBehaviour
     [SerializeField] private float nodeDiameter = 140f;
     [SerializeField] private float dotDiameter = 16f;
     [SerializeField] private float dotSpacing = 36f;
+
+    [Header("Path Pills (connector dots are drawn as the game's projectile pills)")]
+    [Tooltip("Optional override. If empty, the set at Resources/LevelMapPills is used; if that is missing too, plain dots are drawn.")]
+    [SerializeField] private Sprite[] pillSprites;
+    [Tooltip("Edge length of each pill sprite, and the footprint used to space them along the path.")]
+    [SerializeField] private float pillSize = 22f;
+    [Tooltip("Fixed seed so the random colour/rotation layout is identical every time the map opens. Change it to reshuffle.")]
+    [SerializeField] private int pillSeed = 12345;
+    [Tooltip("Own up/down bob of the pills, in canvas units. Fades to zero toward each node so the pills next to a node move exactly with that node's floating.")]
+    [SerializeField] private float pillFloatAmplitude = 3f;
+    [SerializeField] private float pillFloatSpeed = 1.2f;
+
     [SerializeField] private float leftPadding = 160f;
     [SerializeField] private float rightPadding = 160f;
 
@@ -80,6 +92,20 @@ public class LevelMapController : MonoBehaviour
     private readonly List<LevelNodeData> nodes = new List<LevelNodeData>();
     private readonly List<GameObject> spawnedNodeViews = new List<GameObject>();
     private readonly List<GameObject> spawnedLineSegments = new List<GameObject>();
+
+    // One entry per pill: where it sits on its segment, so LateUpdate can blend the
+    // floating offsets of the two nodes it connects (spawnedNodeViews[i] <-> [i + 1]).
+    // `along` runs 0..1 from the surface of the first node to the surface of the next one
+    // (not centre to centre), so the chain's ends sit exactly on the nodes' own motion.
+    private struct PillFloat
+    {
+        public RectTransform rt;
+        public Vector2 basePos;
+        public int fromNode;
+        public float along;
+        public float phase;
+    }
+    private readonly List<PillFloat> pillFloats = new List<PillFloat>();
 
     private void Start()
     {
@@ -218,7 +244,16 @@ public class LevelMapController : MonoBehaviour
         // clear the VISIBLE circle, not the bigger hit-area, or the node-to-dot gap
         // ends up visibly wider than the dot-to-dot gaps.
         float nodeRadius = GetVisualNodeRadius();
-        float dotRadius = dotDiameter * 0.5f;
+
+        // Pills replace the plain dots when a sprite set is available. The footprint
+        // (dotSize) drives the same equal-gap spacing maths either way.
+        Sprite[] pills = ResolvePillSprites();
+        bool usePills = pills.Length > 0;
+        float dotSize = usePills ? pillSize : dotDiameter;
+        float dotRadius = dotSize * 0.5f;
+        System.Random rng = new System.Random(pillSeed);
+        System.Random phaseRng = new System.Random(pillSeed + 1);   // separate stream: float phases never shift the colour/rotation layout
+        int lastPill = -1;
 
         for (int i = 0; i < nodes.Count - 1; i++)
         {
@@ -241,23 +276,107 @@ public class LevelMapController : MonoBehaviour
             // gaps, not just the gaps between dots. dotSpacing is the target gap size;
             // dotCount is picked so the exact gap comes out close to it, then the gap
             // is recomputed to fit `available` perfectly (n dots + (n+1) equal gaps).
-            int dotCount = Mathf.Max(1, Mathf.RoundToInt((available - dotSpacing) / (dotDiameter + dotSpacing)));
-            float gap = (available - dotCount * dotDiameter) / (dotCount + 1);
+            int dotCount = Mathf.Max(1, Mathf.RoundToInt((available - dotSpacing) / (dotSize + dotSpacing)));
+            float gap = (available - dotCount * dotSize) / (dotCount + 1);
 
             for (int d = 1; d <= dotCount; d++)
             {
-                float offset = nodeRadius + dotRadius + gap * d + (d - 1) * dotDiameter;
+                float offset = nodeRadius + dotRadius + gap * d + (d - 1) * dotSize;
                 Vector2 pos = a + direction * offset;
 
                 Image dot = Instantiate(lineSegmentPrefab, pathLineContainer);
                 RectTransform rt = dot.rectTransform;
                 rt.anchoredPosition = pos;
-                rt.sizeDelta = new Vector2(dotDiameter, dotDiameter);
-                dot.color = tint;
+                rt.sizeDelta = new Vector2(dotSize, dotSize);
+
+                if (usePills)
+                {
+                    // Random colour (sprite) with no two identical pills side by side,
+                    // and a random rotation. Seeded, so the layout is stable between visits.
+                    int pick = rng.Next(pills.Length);
+                    if (pills.Length > 1 && pick == lastPill)
+                        pick = (pick + 1 + rng.Next(pills.Length - 1)) % pills.Length;
+                    lastPill = pick;
+
+                    dot.sprite = pills[pick];
+                    dot.color = Color.white;
+                    dot.preserveAspect = true;
+                    dot.raycastTarget = false;
+                    rt.localRotation = Quaternion.Euler(0f, 0f, (float)(rng.NextDouble() * 360.0));
+
+                    pillFloats.Add(new PillFloat
+                    {
+                        rt = rt,
+                        basePos = pos,
+                        fromNode = i,
+                        along = Mathf.Clamp01((offset - nodeRadius) / available),
+                        phase = (float)(phaseRng.NextDouble() * Math.PI * 2.0)
+                    });
+                }
+                else
+                {
+                    dot.color = tint;
+                }
 
                 spawnedLineSegments.Add(dot.gameObject);
             }
         }
+    }
+
+    // LateUpdate = after every FloatingIdle.Update, so the node offsets read here are
+    // this frame's. Each pill follows the blend of its two nodes' floating (so the end
+    // pills move with their node) plus its own bob, which is zero at the ends.
+    private void LateUpdate()
+    {
+        if (pillFloats.Count == 0)
+            return;
+
+        for (int k = 0; k < pillFloats.Count; k++)
+        {
+            PillFloat p = pillFloats[k];
+            if (p.rt == null)
+                continue;
+
+            Vector2 follow = Vector2.Lerp(NodeFloatOffset(p.fromNode), NodeFloatOffset(p.fromNode + 1), p.along);
+
+            float envelope = Mathf.Sin(p.along * Mathf.PI);
+            envelope *= envelope;
+            float ownBob = Mathf.Sin(Time.time * pillFloatSpeed + p.phase) * pillFloatAmplitude * envelope;
+
+            p.rt.anchoredPosition = p.basePos + follow + new Vector2(0f, ownBob);
+        }
+    }
+
+    // How far FloatingIdle has currently pushed a node away from its laid-out position.
+    private Vector2 NodeFloatOffset(int nodeIndex)
+    {
+        if (nodeIndex < 0 || nodeIndex >= spawnedNodeViews.Count || nodeIndex >= nodes.Count)
+            return Vector2.zero;
+
+        GameObject view = spawnedNodeViews[nodeIndex];
+        if (view == null)
+            return Vector2.zero;
+
+        return ((RectTransform)view.transform).anchoredPosition - nodes[nodeIndex].anchoredPos;
+    }
+
+    private Sprite[] ResolvePillSprites()
+    {
+        Sprite[] source = pillSprites;
+        if (source == null || source.Length == 0)
+        {
+            LevelMapPillSet set = Resources.Load<LevelMapPillSet>("LevelMapPills");
+            source = set != null ? set.sprites : null;
+        }
+
+        List<Sprite> valid = new List<Sprite>();
+        if (source != null)
+        {
+            foreach (Sprite s in source)
+                if (s != null)
+                    valid.Add(s);
+        }
+        return valid.ToArray();
     }
 
     private void ResizeContent()
@@ -282,6 +401,7 @@ public class LevelMapController : MonoBehaviour
         foreach (GameObject go in spawnedLineSegments)
             Destroy(go);
         spawnedLineSegments.Clear();
+        pillFloats.Clear();
     }
 
     private void OnNodeClicked(LevelNodeData nodeData)

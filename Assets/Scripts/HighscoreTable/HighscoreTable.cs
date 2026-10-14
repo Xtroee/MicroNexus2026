@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 
@@ -76,6 +77,33 @@ public class HighscoreTable : MonoBehaviour
         t.Find("Sun").GetComponent<TextMeshProUGUI>().text = entry.sun.ToString();
         t.Find("Nucleus").GetComponent<TextMeshProUGUI>().text = entry.nucleus.ToString();
         t.Find("Score").GetComponent<TextMeshProUGUI>().text = entry.score.ToString();
+
+        // top 3 get a gold / silver / bronze trophy, every row gets a zebra-striped plate
+        Color medal = rank == 1 ? new Color(1f, 0.82f, 0.3f)
+                    : rank == 2 ? new Color(0.82f, 0.88f, 0.95f)
+                    : rank == 3 ? new Color(0.9f, 0.58f, 0.32f)
+                    : Color.white;
+        Transform trophy = t.Find("Trophy");
+        if (trophy != null)
+        {
+            trophy.gameObject.SetActive(rank <= 3);
+            Image trophyImage = trophy.GetComponent<Image>();
+            if (trophyImage != null) trophyImage.color = medal;
+        }
+        if (rank <= 3)
+            t.Find("Pos").GetComponent<TextMeshProUGUI>().color = medal;
+
+        Transform rowBg = t.Find("Row BG");
+        if (rowBg != null)
+        {
+            Image rowImage = rowBg.GetComponent<Image>();
+            if (rowImage != null)
+            {
+                Color c = rowImage.color;
+                c.a = (rank % 2 == 0) ? 0.4f : 0.18f;
+                rowImage.color = c;
+            }
+        }
 
         list.Add(t);
     }

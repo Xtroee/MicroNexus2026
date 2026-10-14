@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -12,20 +14,63 @@ public class BioFileEntry : MonoBehaviour
     [SerializeField] private GameObject bioFileRoot;
     [SerializeField] private QuestionMarkManager questionMarkManager;
 
+    private Coroutine pendingOpen;
+
     public void OpenRanger()
     {
-        if (bioFileRoot != null) bioFileRoot.SetActive(true);
-        questionMarkManager?.ShowRangerRoot();
+        Open(() => questionMarkManager?.ShowRangerRoot());
     }
 
     public void OpenEnemy()
     {
-        if (bioFileRoot != null) bioFileRoot.SetActive(true);
-        questionMarkManager?.ShowEnemyBioChoose();
+        Open(() => questionMarkManager?.ShowEnemyBioChoose());
+    }
+
+    /// <summary>
+    /// Activating the RangerGroup root runs the Start()/OnEnable() of its managers on the next frame,
+    /// and QuestionMarkManager's Start resets everything to its default (hidden) state. Showing the
+    /// panel in the same frame as the activation therefore got undone and the button needed a second
+    /// press. When the root was inactive we wait one frame so our call lands after that reset.
+    /// </summary>
+    private void Open(Action show)
+    {
+        if (bioFileRoot == null)
+        {
+            show();
+            return;
+        }
+
+        if (pendingOpen != null)
+        {
+            StopCoroutine(pendingOpen);
+            pendingOpen = null;
+        }
+
+        if (bioFileRoot.activeSelf)
+        {
+            show();
+            return;
+        }
+
+        bioFileRoot.SetActive(true);
+        pendingOpen = StartCoroutine(ShowAfterInit(show));
+    }
+
+    private IEnumerator ShowAfterInit(Action show)
+    {
+        yield return null;          // managers' Start()/OnEnable() have run by now
+        pendingOpen = null;
+        if (bioFileRoot != null && bioFileRoot.activeSelf)
+            show();
     }
 
     public void Close()
     {
+        if (pendingOpen != null)
+        {
+            StopCoroutine(pendingOpen);
+            pendingOpen = null;
+        }
         if (bioFileRoot != null) bioFileRoot.SetActive(false);
         Time.timeScale = 1f; // QuestionMarkManager.ShowQuestionMark() pauses time; undo that on the way out
     }

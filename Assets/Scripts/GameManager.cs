@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
             sunsText.text = suns.ToString();
 
         if (sunsEndingText != null)
-            sunsEndingText.text = $"final sun value : {suns}";
+            sunsEndingText.text = $"ENERGY  {suns}";
 
         GameData.Data.FinalSuns = suns;
 

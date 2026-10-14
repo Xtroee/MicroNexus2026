@@ -172,6 +172,12 @@ public class CardSelectionManager : MonoBehaviour
             if (s.occupiedCard == null) continue;
 
             var card = s.occupiedCard;
+
+            // Kartu digeser ke slot lewat SmoothCompactAnimation() di Update() manager ini,
+            // tapi manager dimatikan di bawah. Kalau READY ditekan sebelum animasi selesai,
+            // kartu bakal nyangkut di tengah jalan. Snap ke posisi slot dulu.
+            card.transform.position = s.transform.position;
+
             var btn = card.GetComponent<Button>();
             var cap = card.GetComponent<CapsuleSlot>();
 

@@ -66,7 +66,7 @@ public class EndlessUIController : MonoBehaviour
         if (!cycleText) return;
 
         int next = currentCycleVisual + 1;
-        cycleText.text = $"Click Ready to enter Cycle {next}";
+        cycleText.text = $"PRESS READY  -  CYCLE {next}";
     }
 
     // =====================================================
@@ -78,7 +78,7 @@ public class EndlessUIController : MonoBehaviour
         currentCycleVisual++;
 
         if (cycleText)
-            cycleText.text = $"Cycle {currentCycleVisual}";
+            cycleText.text = $"CYCLE {currentCycleVisual}";
 
         totalEnemiesThisCycle = wave1 + wave2 + wave3;
         totalKillsThisCycle = 0;
@@ -198,10 +198,10 @@ public class EndlessUIController : MonoBehaviour
     private void UpdateTotalFlagsText()
     {
         if (totalFlagText)
-            totalFlagText.text = $"Flags: {totalFlagsAllCycles}";
+            totalFlagText.text = $"FLAGS  {totalFlagsAllCycles}";
 
         if (totalFlagSummaryText)
-            totalFlagSummaryText.text = $"Total flag captured : {totalFlagsAllCycles}";
+            totalFlagSummaryText.text = $"FLAGS  {totalFlagsAllCycles}";
     }
 
     public void ResetUIForGameOver()
