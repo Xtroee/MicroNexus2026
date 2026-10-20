@@ -27,6 +27,15 @@ public class EnemyBacteriaBioManager : MonoBehaviour
     [SerializeField] private EnemyData BacteriaOrange;
     [SerializeField] private EnemyData BacteriaYellow;
 
+    [Header("Bacteria Data - iterasi 2")]
+    [SerializeField] private EnemyData BacteriaKlebsiella;
+    [SerializeField] private EnemyData BacteriaNeisseria;
+    [SerializeField] private EnemyData BacteriaVre;
+    [SerializeField] private EnemyData BacteriaHPylori;
+    [SerializeField] private EnemyData BacteriaSPyogenes;
+    [SerializeField] private EnemyData BacteriaCrab;
+    [SerializeField] private EnemyData BacteriaChlamydia;
+
     private EnemyData[] allBacteria;
 
     private void Start()
@@ -39,7 +48,14 @@ public class EnemyBacteriaBioManager : MonoBehaviour
             BacteriaBlue,
             BacteriaPink,
             BacteriaOrange,
-            BacteriaYellow
+            BacteriaYellow,
+            BacteriaKlebsiella,
+            BacteriaNeisseria,
+            BacteriaVre,
+            BacteriaHPylori,
+            BacteriaSPyogenes,
+            BacteriaCrab,
+            BacteriaChlamydia
         };
 
         ShowBacteriaPurple();
@@ -77,4 +93,11 @@ public class EnemyBacteriaBioManager : MonoBehaviour
     public void ShowBacteriaPink() => ApplyEnemy(BacteriaPink);
     public void ShowBacteriaOrange() => ApplyEnemy(BacteriaOrange);
     public void ShowBacteriaYellow() => ApplyEnemy(BacteriaYellow);
+    public void ShowBacteriaKlebsiella() => ApplyEnemy(BacteriaKlebsiella);
+    public void ShowBacteriaNeisseria() => ApplyEnemy(BacteriaNeisseria);
+    public void ShowBacteriaVre() => ApplyEnemy(BacteriaVre);
+    public void ShowBacteriaHPylori() => ApplyEnemy(BacteriaHPylori);
+    public void ShowBacteriaSPyogenes() => ApplyEnemy(BacteriaSPyogenes);
+    public void ShowBacteriaCrab() => ApplyEnemy(BacteriaCrab);
+    public void ShowBacteriaChlamydia() => ApplyEnemy(BacteriaChlamydia);
 }

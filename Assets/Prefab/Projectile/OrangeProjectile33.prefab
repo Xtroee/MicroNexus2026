@@ -111,12 +111,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  damageHelminth: 7
+  damageVirus: 1
   damageMushroom: 4
   damageProtozoa: 4
-  damageRed: 3
-  damagePurple: 3
-  damageGreen: 3
+  damageHelminth: 7
   lifeTime: 25
 --- !u!1 &7920023885109222426
 GameObject:
@@ -145,7 +143,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.35836798, w: 0.93358046}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.19, y: 0.19, z: 0.19}
+  m_LocalScale: {x: 0.19, y: 0.19, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4920314435965006219}

@@ -28,6 +28,15 @@ public class RangerBioManager : MonoBehaviour
     [FormerlySerializedAs("Yellow")] [SerializeField] private CharacterData Levofloksasin;
     [FormerlySerializedAs("Black")] [SerializeField] private CharacterData Cotrimoxazole;
 
+    [Header("Characters Data - iterasi 2")]
+    [SerializeField] private CharacterData Ceftria;
+    [SerializeField] private CharacterData Clarith;
+    [SerializeField] private CharacterData Colistin;
+    [SerializeField] private CharacterData Doxy;
+    [SerializeField] private CharacterData Linezo;
+    [SerializeField] private CharacterData Merope;
+    [SerializeField] private CharacterData Penicilin;
+
     private CharacterData[] allCharacters;
 
     private void Start()
@@ -40,7 +49,14 @@ public class RangerBioManager : MonoBehaviour
             Azitromisin,
             Ciprofloxacin,
             Levofloksasin,
-            Cotrimoxazole
+            Cotrimoxazole,
+            Ceftria,
+            Clarith,
+            Colistin,
+            Doxy,
+            Linezo,
+            Merope,
+            Penicilin
         };
 
         ShowAmoxicillin();
@@ -78,4 +94,11 @@ public class RangerBioManager : MonoBehaviour
     public void ShowCiprofloxacin() => ApplyCharacter(Ciprofloxacin);
     public void ShowLevofloksasin() => ApplyCharacter(Levofloksasin);
     public void ShowCotrimoxazole() => ApplyCharacter(Cotrimoxazole);
+    public void ShowCeftria() => ApplyCharacter(Ceftria);
+    public void ShowClarith() => ApplyCharacter(Clarith);
+    public void ShowColistin() => ApplyCharacter(Colistin);
+    public void ShowDoxy() => ApplyCharacter(Doxy);
+    public void ShowLinezo() => ApplyCharacter(Linezo);
+    public void ShowMerope() => ApplyCharacter(Merope);
+    public void ShowPenicilin() => ApplyCharacter(Penicilin);
 }

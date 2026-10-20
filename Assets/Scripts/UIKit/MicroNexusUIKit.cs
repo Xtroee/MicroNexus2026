@@ -487,7 +487,48 @@ public static class MicroNexusUIKit
         if (iconName.StartsWith("Ciprofloxacin")) return Mint;
         if (iconName.StartsWith("Levofloksasin")) return Amber;
         if (iconName.StartsWith("Cotrimoxazole")) return Violet;
+        // iterasi 2 characters (same colours as their projectile capsules)
+        string low = iconName.ToLower();
+        if (low.StartsWith("ceftria")) return new Color(0.62f, 0.45f, 0.9f, 0.95f);
+        if (low.StartsWith("clarith")) return new Color(1f, 0.55f, 0.4f, 0.95f);
+        if (low.StartsWith("colistin")) return new Color(0.58f, 0.72f, 0.3f, 0.95f);
+        if (low.StartsWith("doxy")) return new Color(0.85f, 0.32f, 0.26f, 0.95f);
+        if (low.StartsWith("linezo")) return new Color(0.4f, 0.75f, 0.98f, 0.95f);
+        if (low.StartsWith("merope")) return new Color(1f, 0.7f, 0.2f, 0.95f);
+        if (low.StartsWith("penicilin")) return new Color(0.7f, 0.48f, 0.3f, 0.95f);
         return Teal;
+    }
+
+    /// <summary>
+    /// Re-points one existing level card to another character: prefab, icon, label, name.
+    /// The card keeps its slot position and price. Returns false when no card with that label exists.
+    /// </summary>
+    public static bool RetargetCard(Transform canvas, string oldLabel, string newCardName, GameObject prefab, Sprite icon, string newLabel)
+    {
+        foreach (Transform c in canvas)
+        {
+            if (!c.name.StartsWith("card ") || !c.gameObject.activeSelf) continue;
+            Transform nm = c.Find("Nama");
+            if (nm == null || nm.GetComponent<TextMeshProUGUI>().text != oldLabel) continue;
+            CapsuleSlot slot = c.GetComponent<CapsuleSlot>();
+            if (slot == null) continue;
+            SerializedObject so = new SerializedObject(slot);
+            so.FindProperty("capsuleObject").objectReferenceValue = prefab;
+            so.FindProperty("capsuleSprite").objectReferenceValue = icon;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            Image ic = c.Find("Capsule").GetComponent<Image>();
+            ic.sprite = icon;
+            ic.preserveAspect = true;
+            // same icon height as the other cards (474 card-units), width follows the art
+            float aspect = icon.rect.width / icon.rect.height;
+            ic.rectTransform.sizeDelta = new Vector2(474f * aspect, 474f);
+            ic.rectTransform.anchoredPosition = new Vector2(0f, 66f);
+            nm.GetComponent<TextMeshProUGUI>().text = newLabel;
+            c.name = newCardName;
+            EditorUtility.SetDirty(c.gameObject);
+            return true;
+        }
+        return false;
     }
 
     /// <summary>

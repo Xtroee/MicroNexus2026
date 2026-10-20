@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ownerTile: {fileID: 0}
-  projectile: {fileID: 0}
+  projectile: {fileID: 962532637339415286, guid: a5e1b471fbe27d044833b9ec745766c4, type: 3}
   shootOrigin: {fileID: 5809071670529317001}
   cooldown: 1
   animator: {fileID: 4846016017919139364}

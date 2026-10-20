@@ -50,6 +50,18 @@ public class CreamProjectile : MonoBehaviour
         // 🦠 ALL BACTERIA
         // =========================
 
+        // =========================
+        // 🦠 STAGE 7-13 BACTERIA (14x14 matrix)
+        // =========================
+
+        if (other.TryGetComponent<BacteriaSpeciesTag>(out var speciesTag))
+        {
+            SoundManager.Instance?.PlayCreamHit();
+            speciesTag.ProjectileHit(AntibioticDamage.Get(AntibioticDamage.Attacker.Cefixime, speciesTag.species));
+            Destroy(gameObject);
+            return;
+        }
+
         if (other.TryGetComponent<BacteriaControllerPurple>(out var purple))
         {
             SoundManager.Instance?.PlayCreamHit();

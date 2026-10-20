@@ -50,6 +50,18 @@ public class BlueProjectile : MonoBehaviour
         // 🦠 ALL BACTERIA (EXPLICIT)
         // =========================
 
+        // =========================
+        // 🦠 STAGE 7-13 BACTERIA (14x14 matrix)
+        // =========================
+
+        if (other.TryGetComponent<BacteriaSpeciesTag>(out var speciesTag))
+        {
+            SoundManager.Instance?.PlayBlueHit();
+            speciesTag.ProjectileHit(AntibioticDamage.Get(AntibioticDamage.Attacker.Vancomisin, speciesTag.species));
+            Destroy(gameObject);
+            return;
+        }
+
         if (other.TryGetComponent<BacteriaControllerPurple>(out var purple))
         {
             SoundManager.Instance?.PlayBlueHit();

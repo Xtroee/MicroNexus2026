@@ -51,6 +51,12 @@ public class QuestionMarkManager : MonoBehaviour
     [SerializeField] private GameObject enemyHelminthPanel;
 
     // ========================
+    // EXTRA CONTENT (iterasi 2 ranger pages + bacteria detail panels)
+    // ========================
+    [Header("Extra Content (hidden by DisableAllContent)")]
+    [SerializeField] private GameObject[] extraContent;
+
+    // ========================
     // BLOCKER
     // ========================
     [Header("Blocker (Optional)")]
@@ -256,6 +262,12 @@ public class QuestionMarkManager : MonoBehaviour
         SafeSetActive(rangerGreenCanvas, false);
         SafeSetActive(rangerYellowCanvas, false);
         SafeSetActive(rangerBlackCanvas, false);
+
+        if (extraContent != null)
+        {
+            foreach (var go in extraContent)
+                SafeSetActive(go, false);
+        }
     }
 
     private bool IsBlocked()

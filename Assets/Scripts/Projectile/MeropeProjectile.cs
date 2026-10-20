@@ -39,6 +39,12 @@ public class MeropeProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.TryGetComponent<BacteriaSpeciesTag>(out var speciesTag))
+        {
+            Hit(() => speciesTag.ProjectileHit(AntibioticDamage.Get(AntibioticDamage.Attacker.Meropenem, speciesTag.species)));
+            return;
+        }
+
         if (other.TryGetComponent<BacteriaControllerPurple>(out var purple))
         {
             Hit(() => purple.ProjectileHit(damagePurple));
