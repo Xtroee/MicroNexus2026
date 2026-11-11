@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 8
+  m_SortingOrder: 3
   m_Sprite: {fileID: 7629120926859432625, guid: 60cb92f1df41d79449d46f26946c91ce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47a333e3375ab114eb6f4f6a80b6d4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speciesName: Streptococcus pneumoniae
   speed: 0.005
   spawnPoint: {fileID: 0}
   bacteriaVisual: {fileID: 2209656120739940901}

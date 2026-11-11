@@ -80,7 +80,15 @@ public class GameManager : MonoBehaviour
         if (IsInteractionBlocked())
         {
             HidePreview();
+            if (removeTool != null) EndRemoveMode();
             currentTile = null;
+            return;
+        }
+
+        // Milk bucket ("tarik obat") mode takes over the mouse until a character is removed or it is cancelled
+        if (removeTool != null)
+        {
+            HandleRemoveMode(mouseWorld);
             return;
         }
 
@@ -288,6 +296,8 @@ public class GameManager : MonoBehaviour
     {
         if (IsInteractionBlocked()) return;
 
+        EndRemoveMode();   // picking a character cancels the milk bucket
+
         currentCapsule = capsule;
         currentCapsuleSprite = sprite;
         selectedPrice = price;
@@ -354,6 +364,140 @@ public class GameManager : MonoBehaviour
         if (capsule.TryGetComponent(out BasicShooterLinezoSoldier linezoSoldier)) { linezoSoldier.ownerTile = tile; return; }
 
         Debug.LogWarning("[GameManager] Capsule/Shooter tidak dikenali: " + capsule.name);
+    }
+
+    // =====================================================
+    // MILK BUCKET — REMOVE A CHARACTER FROM A TILE
+    // =====================================================
+
+    private MilkBucketTool removeTool;
+    private GameObject removePreview;
+    private Tile removeHoverTile;
+    private readonly Dictionary<SpriteRenderer, Color> removeTint = new Dictionary<SpriteRenderer, Color>();
+    private static readonly Color RemoveTint = new Color(1f, 0.5f, 0.6f, 1f);
+
+    public bool IsRemoveToolActive(MilkBucketTool tool)
+    {
+        return removeTool != null && removeTool == tool;
+    }
+
+    public void BeginRemoveMode(MilkBucketTool tool)
+    {
+        if (IsInteractionBlocked() || tool == null) return;
+
+        CancelSelection();      // drop any selected character card
+        EndRemoveMode();
+
+        removeTool = tool;
+        CreateRemovePreview(tool.Icon);
+    }
+
+    public void EndRemoveMode()
+    {
+        ClearRemoveHighlight();
+
+        if (removePreview != null)
+            Destroy(removePreview);
+
+        removePreview = null;
+        removeTool = null;
+    }
+
+    private void CreateRemovePreview(Sprite icon)
+    {
+        if (icon == null) return;
+
+        removePreview = new GameObject("Preview_MilkBucket");
+        SpriteRenderer sr = removePreview.AddComponent<SpriteRenderer>();
+        sr.sprite = icon;
+        sr.sortingOrder = 40;                 // above characters, bacteria (3) and atoms (13)
+        sr.color = new Color(1f, 1f, 1f, 0.9f);
+        removePreview.transform.localScale = Vector3.one * 0.55f;
+        removePreview.SetActive(false);
+    }
+
+    private void HandleRemoveMode(Vector3 mouseWorld)
+    {
+        if (removePreview != null)
+        {
+            removePreview.SetActive(true);
+            removePreview.transform.position = mouseWorld + new Vector3(0.45f, 0.35f, 0f);
+        }
+
+        // right click cancels
+        if (Input.GetMouseButtonDown(1))
+        {
+            EndRemoveMode();
+            return;
+        }
+
+        Tile tile = null;
+        RaycastHit2D hit = Physics2D.Raycast(mouseWorld, Vector2.zero, Mathf.Infinity, tileMask);
+        if (hit.collider != null)
+        {
+            tile = hit.collider.GetComponent<Tile>();
+            if (tile != null && (!tile.hasCapsule || tile.currentCapsule == null))
+                tile = null;
+        }
+
+        if (tile != removeHoverTile)
+        {
+            ClearRemoveHighlight();
+            removeHoverTile = tile;
+            if (tile != null) ApplyRemoveHighlight(tile);
+        }
+
+        if (tile != null && Input.GetMouseButtonDown(0))
+            RemoveCapsule(tile);
+    }
+
+    private void ApplyRemoveHighlight(Tile tile)
+    {
+        foreach (SpriteRenderer sr in tile.currentCapsule.GetComponentsInChildren<SpriteRenderer>())
+        {
+            removeTint[sr] = sr.color;
+            sr.color = new Color(RemoveTint.r, RemoveTint.g, RemoveTint.b, sr.color.a);
+        }
+    }
+
+    private void ClearRemoveHighlight()
+    {
+        foreach (KeyValuePair<SpriteRenderer, Color> kv in removeTint)
+            if (kv.Key != null) kv.Key.color = kv.Value;
+
+        removeTint.Clear();
+        removeHoverTile = null;
+    }
+
+    private void RemoveCapsule(Tile tile)
+    {
+        GameObject capsule = tile.currentCapsule;
+        MilkBucketTool tool = removeTool;
+
+        int refund = Mathf.RoundToInt(PriceOfPlacedCapsule(capsule) * tool.RefundPercent);
+        suns += refund;
+
+        ClearRemoveHighlight();
+        tile.ClearCapsule();
+        Destroy(capsule);
+
+        SoundManager.Instance?.PlayAtomClick();
+        tool.OnUsed();
+        EndRemoveMode();
+
+        Debug.Log($"[GameManager] Milk bucket removed '{capsule.name}' from {tile.name}, refund {refund} atoms");
+    }
+
+    // A placed character is a clone of the card's prefab: match by name to find what it cost
+    private int PriceOfPlacedCapsule(GameObject placed)
+    {
+        string prefabName = placed.name.Replace("(Clone)", "").Trim();
+
+        foreach (CapsuleSlot slot in FindObjectsByType<CapsuleSlot>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            if (slot.capsuleObject != null && slot.capsuleObject.name == prefabName)
+                return slot.Price;
+
+        return 0;
     }
 
     // =====================================================

@@ -36,6 +36,7 @@ public class PreviewNameDisplay : MonoBehaviour
     [SerializeField] private string displayName7;
     
     private Dictionary<string, string> mapping = new Dictionary<string, string>();
+    private readonly HashSet<string> warnedNames = new HashSet<string>();
     private string lastSlot1Text = "";
     private string lastSlot2Text = "";
     private string lastSlot3Text = "";
@@ -161,8 +162,11 @@ public class PreviewNameDisplay : MonoBehaviour
             return mapping[prefabName];
         }
         
-        // Kalau tidak ada di mapping, return prefabName
-        Debug.LogWarning($"GetDisplayName: '{prefabName}' TIDAK ditemukan di mapping!");
+        // Bakteri iterasi 2 (Klebsiella, Neisseria, VRE, H. pylori, S. pyogenes, CRAB, Chlamydia) tidak
+        // punya entri mapping: nama prefab-nya sudah berupa nama spesies, jadi dipakai apa adanya.
+        // Peringatan hanya dicatat sekali per nama (sebelumnya terulang setiap frame).
+        if (warnedNames.Add(prefabName))
+            Debug.Log($"GetDisplayName: '{prefabName}' tidak ada di mapping, memakai nama prefab.");
         return prefabName;
     }
     

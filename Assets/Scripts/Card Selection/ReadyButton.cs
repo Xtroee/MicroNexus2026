@@ -21,6 +21,19 @@ public class ReadyButton : MonoBehaviour
     [SerializeField] private BacteriaSpawnerEndless spawner;
 
     private bool selectionLocked = false;
+    private bool phaseEnabled = true;
+
+    // READY stays dimmed until enough characters are picked, and the HUD text says how many are missing
+    private void Update()
+    {
+        if (selectionLocked || readyButton == null || cardManager == null) return;
+
+        int selected = cardManager.GetSelectedCount();
+        readyButton.interactable = phaseEnabled && selected >= minRequiredSelection;
+
+        if (ui != null)
+            ui.SetSelectionProgress(selected, minRequiredSelection);
+    }
 
     private void Awake()
     {
@@ -100,9 +113,11 @@ public class ReadyButton : MonoBehaviour
 
     public void SetReadyEnabled(bool state)
     {
+        phaseEnabled = state;
+
         if (readyButton != null)
         {
-            readyButton.interactable = state;
+            readyButton.interactable = state && (cardManager == null || selectionLocked || cardManager.GetSelectedCount() >= minRequiredSelection);
             Debug.Log($"<color=yellow>[READY] Button interactable = {state}</color>");
         }
     }

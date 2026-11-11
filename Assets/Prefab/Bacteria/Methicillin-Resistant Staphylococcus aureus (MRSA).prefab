@@ -9866,7 +9866,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 3
   m_Sprite: {fileID: 7629120926859432625, guid: 084400a34d087784195ce7dcf7688423, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9947,6 +9947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19c0ae3c3697d2248806cfa366f573d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speciesName: Methicillin-Resistant Staphylococcus aureus (MRSA)
   speed: 0.005
   spawnPoint: {fileID: 0}
   bacteriaVisual: {fileID: 5786986031622194025}

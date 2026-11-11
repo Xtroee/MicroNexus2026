@@ -53,7 +53,33 @@ public class EndlessUIController : MonoBehaviour
 
     public void EnterSelectPhase()
     {
+        selecting = true;
         UpdateSelectText();
+
+        // The previous cycle's bar (full, red flags) used to stay on screen while the next team is picked
+        if (slider) slider.value = 0;
+        if (flagContainer)
+            foreach (Transform child in flagContainer)
+                Destroy(child.gameObject);
+        flagsOrdered.Clear();
+    }
+
+    private bool selecting = true;
+
+    /// <summary>
+    /// Select phase hint: tells the player how many characters still have to be picked before READY works.
+    /// Called every frame by ReadyButton, so it only rewrites the text when it changes.
+    /// </summary>
+    public void SetSelectionProgress(int selected, int required)
+    {
+        if (!cycleText || !selecting) return;
+
+        string text = selected >= required
+            ? $"PRESS READY  -  CYCLE {currentCycleVisual + 1}"
+            : $"PILIH {required} KARAKTER  ({selected}/{required})";
+
+        if (cycleText.text != text)
+            cycleText.text = text;
     }
 
     public void OnPlayPhaseStart()
@@ -76,6 +102,7 @@ public class EndlessUIController : MonoBehaviour
     public void SetupNewCycle(int wave1, int wave2, int wave3)
     {
         currentCycleVisual++;
+        selecting = false;
 
         if (cycleText)
             cycleText.text = $"CYCLE {currentCycleVisual}";
