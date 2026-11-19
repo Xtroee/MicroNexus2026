@@ -193,3 +193,55 @@ Dicek 13 scene (Level 1-12 Stage 1 + Level Endless), struktur `Canvas/Pause`, `C
 - Belum bisa dicek visual (render popup): game view di edit mode gak nge-repaint UI Overlay lewat MCP. Perlu dicek
   manual di Play mode (Esc/pause, menang, kalah) kalau mau mastiin tampilannya.
 - Catatan lama masih berlaku: orphan `Win UI` (tanpa "(1)") ada di semua scene, dead clutter (lihat audit sebelumnya).
+
+---
+
+## Audit loop malam 2026-11-18 (otomatis, user tidur)
+
+### Iterasi 1 — overlap layer & tombol tertutup di seluruh scene
+
+**Diperbaiki sebelum loop**: node level terkunci di Level Map tampil sebagai kotak besar. Penyebab: `LevelLabelPlate` cuma
+menyembunyikan "Label Plate" di `LateUpdate()` milik label nama, yang tidak jalan saat label dinonaktifkan (node terkunci) →
+plate tertinggal 100x100. Fix: `OnDisable()` ikut menyembunyikan plate. Gembok (`Image_LockOverlay`) dipindah ke pojok kanan
+atas tabung, 28x28, posisi sama dengan centang hijau. Diverifikasi di Play mode: 3 node terkunci, 0 plate terlihat.
+
+**Uji klik nyata (EventSystem.RaycastAll ke titik tengah tiap tombol aktif, Play mode)** — 20 scene di Build Settings:
+semua lolos, 0 tombol tertutup elemen lain (menu, mode, peta level, 3 scene leaderboard, Halaman Belajar, Endless, Level 1-12;
+kartu dicek setelah atom 500 + cooldown selesai).
+
+**Sorting world sprite (prefab)**: tile 2, karakter & bakteri 3 (sama-sama diurutkan sumbu Y), partikel hit 6, proyektil 8,
+atom 13, funnel 17/2. Konsisten untuk 14 bakteri, 8 soldier iterasi 1, 7 karakter + proyektil iterasi 2.
+
+**Catatan laten (bukan bug aktif)**:
+- `Virus` (5), `Mushroom` (4), `Protozoa` (6), `Helminth` (7) punya sortingOrder beda dari karakter (3) → kalau suatu saat
+  diaktifkan, mereka selalu tergambar di atas karakter tanpa peduli baris. Saat ini cuma direferensikan oleh
+  `BacteriaSpawner` di `Level Endless.unity` yang **nonaktif** → tidak pernah muncul. Kalau mau dipakai, samakan ke 3.
+- `Capsule Red PvZ` sortingOrder 63, cuma dipakai kartu lama `card capsule red` yang nonaktif di Level 1-12.
+- Gameplay scene punya 2 Canvas overlay dengan sortingOrder 0 (`Canvas` HUD & `QuestionMarkCanvas`). Aman karena
+  `QuestionMarkManager` menonaktifkan HUD saat Bio-File dibuka; tidak tumpang tindih saat dipakai.
+
+---
+
+## Cleanup 2026-11-19 (atas permintaan user)
+
+**Script mati dipindah ke arsip** (`E:\SKRIPSI BACKUPP\Archived Code\Assets\Scripts\...`, bukan dihapus permanen; struktur folder dipertahankan,
+`.meta` ikut, jadi bisa dikembalikan apa adanya). Dicek ulang sebelum dipindah: 0 referensi guid di `.unity/.prefab/.asset/.controller`,
+0 pemakaian tipe di script aktif. 16 script: `Projectile`, `BasicShooter`, `FinishPoint`, `DragDrop`, `ObatSingleDrag`, `Bacteria`,
+`StageSelection`, `LevelHelper`, `LevelMenu`, `PlayerNameInput`, `ItemDrop`, `RedCapsule`, `RedCapsuleSource`, `ZombieBacteria`,
+`TMPHyperlinkHandler`, `FunnelEntry`. Folder kosong `Finish/`, `Level Helper/`, `NameSave/` ikut dipindah. Kompilasi bersih.
+
+**Objek nonaktif yang dihapus** (dicek dulu: tidak ada komponen lain yang merujuk, tidak dicari lewat nama di kode):
+- New MainMenu: `Canvas/Play Button`, `Canvas/Quit Button` (+ 2 entri `HoverImageSwitcher` di `Hover Button Manager` yang menunjuk ke situ;
+  komponen itu sekarang berisi 0 entri, tidak berbahaya).
+- Leaderboard Main Menu: `Button Stage Selection`, `Button Retry Survival`, `Reset Button`. Leaderboard: `Reset Button`.
+- Stage 2 Selection (di luar Build Settings): `Button Level 2` (+ 1 entri hover).
+- Level 1–12 Stage 1 + Level Endless: `Canvas/Win UI` (tanpa "(1)"). `WaveManager.winUIs` dan `MicroNexusUIKit` memakai `Win UI (1)`, tetap utuh.
+- `RangerGroup.prefab`: `General Canvas/Bio Enemy Default` (orphan, 7 tombol mati).
+
+Cadangan versi sebelum cleanup: `E:\SKRIPSI BACKUPP\Archived Code\backup sebelum cleanup 2026-11-19\` (18 file scene/prefab).
+
+**Verifikasi**: pemindaian semua scene Build Settings + Stage 2 Selection → 0 missing reference, 0 missing script. Play mode: New MainMenu,
+Level 1 Stage 1, MainMenu disease (buka daftar bakteri, daftar antibiotik, kembali), Leaderboard Main Menu → 0 error/warning.
+
+**Sengaja tidak disentuh**: scene di luar Build Settings (`MainMenu`, `Stage Selection`, `Stage 1/2 Selection`, `New Scene Test UI`,
+`ParticleSystemTest`, `Prefabing`, `_Deprecated/New Stage Selector`) tidak ikut ke build, jadi dibiarkan. Bisa dipindah ke arsip kalau user mau.

@@ -17,16 +17,28 @@ public class LevelLabelPlate : MonoBehaviour
     private RectTransform labelRect;
     private RectTransform plate;
 
-    private void LateUpdate()
+    private RectTransform FindPlate()
     {
-        if (label == null) label = GetComponent<TextMeshProUGUI>();
-        if (labelRect == null) labelRect = (RectTransform)transform;
         if (plate == null && transform.parent != null)
         {
             Transform p = transform.parent.Find("Label Plate");
             if (p != null) plate = (RectTransform)p;
         }
-        if (plate == null) return;
+        return plate;
+    }
+
+    // LateUpdate does not run while the label is inactive (e.g. a locked node hides its name), so hide
+    // the plate here; otherwise it stays behind at its prefab size as an empty box over the node.
+    private void OnDisable()
+    {
+        if (FindPlate() != null) plate.gameObject.SetActive(false);
+    }
+
+    private void LateUpdate()
+    {
+        if (label == null) label = GetComponent<TextMeshProUGUI>();
+        if (labelRect == null) labelRect = (RectTransform)transform;
+        if (FindPlate() == null) return;
 
         bool show = label.gameObject.activeInHierarchy && !string.IsNullOrEmpty(label.text);
         if (plate.gameObject.activeSelf != show) plate.gameObject.SetActive(show);

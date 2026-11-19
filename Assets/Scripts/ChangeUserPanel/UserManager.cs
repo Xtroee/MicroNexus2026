@@ -52,6 +52,7 @@ public class UserManager : MonoBehaviour
             CurrentUser = "Player";
 
         GameData.Data.PlayerName = CurrentUser;
+        GameData.Data.LoadProgressForUser(CurrentUser);
     }
 
     public void SaveUsers()
@@ -74,6 +75,7 @@ public class UserManager : MonoBehaviour
         PlayerPrefs.Save();
 
         GameData.Data.PlayerName = name;
+        GameData.Data.LoadProgressForUser(name); // each player has their own level progress
 
         Debug.Log($"[UserManager] CurrentUser changed to: {name}");
 
@@ -101,6 +103,7 @@ public class UserManager : MonoBehaviour
         if (!removed) return false;
 
         SaveUsers();
+        GameData.Data.DeleteProgressForUser(name);
 
         if (name == CurrentUser)
         {
@@ -110,6 +113,7 @@ public class UserManager : MonoBehaviour
             PlayerPrefs.Save();
 
             GameData.Data.PlayerName = CurrentUser;
+            GameData.Data.LoadProgressForUser(CurrentUser);
             OnUserChanged?.Invoke(CurrentUser);
 
             Debug.Log($"[UserManager] ActiveUser fallback ke: {CurrentUser}");

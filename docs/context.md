@@ -27,9 +27,10 @@ tabel kesimpulan.
 | **Live gameplay** (7 lama) | Amoxicillin, Cefixime, Vancomisin, Azitromisin, Ciprofloxacin, Levofloksasin, Cotrimoxazole × S. pneumoniae, MSSA, MRSA, M. catarrhalis, H. influenzae, E. coli, P. aeruginosa | 1-6 | Implementasi gameplay penuh (`Capsule*.cs`/`BasicShooter*.cs`/`SoldierBasic/*.cs`, character art selesai) |
 | **Scaffolded, placeholder** (7 baru) | Meropenem/Klebsiella ESBL, Ceftriaxone/N. gonorrhoeae, Linezolid/VRE, Clarithromycin/H. pylori, Penicillin V/S. pyogenes, Colistin/CRAB, Doxycycline/C. trachomatis | 7-13 | Scene ada (`Level 7-12 Stage 1.unity`, Stage 13 belum), tapi PAKAI character/bacteria LAMA sebagai placeholder — lihat `stage-implementation-status.md` buat kombinasi exact tiap stage. Character art baru: 5/7 selesai (Ceftriaxone, Linezolid, Clarithromycin, Doxycycline, Meropenem); Penicillin V & Colistin belum. Bakteri baru: art belum ada sama sekali (baru rencana warna/shape). |
 
-**Matriks numerik (0-20 scale) di dokumen full-14x14 BELUM disinkron ke kode** — `Projectile*.cs`/`Capsule*.cs`
-masih pakai matriks per-warna hardcode manual yang cuma cover 6 pasangan lama. Nyocokin ke matriks referensi adalah
-kerjaan terpisah, nunggu character/bacteria final Stage 7-13 kelar.
+**Matriks numerik (0-20 scale) di dokumen full-14x14 SUDAH disinkron ke kode (2026-11-18)** — 7 proyektil iterasi 1
+(`Yellow/Cream/Blue/Red/Green/Orange/BlackProjectile.cs`) + `MeropeProjectile.cs` diverifikasi via refleksi di Unity
+(0 selisih), prefab `AntibioticProjectile` iterasi 2 dan tabel `AntibioticDamage` juga cocok. Bio-File stars
+(`BioFileBuilder.OldStars`) cocok setelah Amoxicillin x S. pneumoniae diperbaiki 4→5.
 
 ## 3. Arsitektur gameplay penting
 

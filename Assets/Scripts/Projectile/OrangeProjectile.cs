@@ -10,12 +10,12 @@ public class OrangeProjectile : MonoBehaviour
     // =========================
     [Header("Damage Bacteria")]
     private int damagePurple = 20;
-    private int damageRed = 5;
-    private int damageYellow = 5;
-    private int damagePink = 7;
-    private int damageOrange = 5;
-    private int damageGreen = 7;
-    private int damageBlue = 5;
+    private int damageRed = 8;
+    private int damageYellow = 8;
+    private int damagePink = 12;
+    private int damageOrange = 8;
+    private int damageGreen = 12;
+    private int damageBlue = 8;
 
     // =========================
     // 🧬 DAMAGE VIRUS

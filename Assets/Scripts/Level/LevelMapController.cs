@@ -145,11 +145,11 @@ public class LevelMapController : MonoBehaviour
             {
                 globalOrdinal++;
 
-                // Lock feature temporarily disabled per pembimbing's request - every
-                // level is playable, only the completed badge still reflects progress.
-                // Restore the `: NodeState.Locked` branch once locking should return.
+                // Sequential progression: levels below the frontier are completed, the frontier
+                // level is playable, everything after it is locked until the previous one is won.
                 NodeState state = globalOrdinal < unlockedGlobal ? NodeState.Completed
-                    : NodeState.Unlocked;
+                    : globalOrdinal == unlockedGlobal ? NodeState.Unlocked
+                    : NodeState.Locked;
 
                 string sceneName = $"Level {levelInStage} Stage {stageIndex + 1}";
 

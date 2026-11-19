@@ -10,12 +10,12 @@ public class CreamProjectile : MonoBehaviour
     // =========================
     [Header("Damage Bacteria")]
     private int damagePurple = 4;
-    private int damageRed = 7; 
+    private int damageRed = 12; 
     private int damageYellow = 4;
     private int damagePink = 20;
     private int damageOrange = 0;
-    private int damageGreen = 1;
-    private int damageBlue = 10;
+    private int damageGreen = 0;
+    private int damageBlue = 16;
 
     // =========================
     // 🧬 DAMAGE VIRUS

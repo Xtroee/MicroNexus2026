@@ -116,7 +116,7 @@ public static class BioFileBuilder
     private static readonly string[] OldKeys = { "Amoxicillin", "Vancomisin", "Cefixime", "Azitromisin", "Ciprofloxacin", "Levofloksasin", "Cotrimoxazole" };
     private static readonly int[][] OldStars =
     {
-        new[]{4,4,1,0,2,1,0, 0,1,0,3,5,0,2},
+        new[]{5,4,1,0,2,1,0, 0,1,0,3,5,0,2},
         new[]{5,5,0,5,0,0,0, 0,0,0,0,5,0,0},
         new[]{1,1,3,0,4,5,0, 1,3,0,0,3,0,0},
         new[]{4,3,3,0,2,0,0, 1,2,0,1,3,0,4},

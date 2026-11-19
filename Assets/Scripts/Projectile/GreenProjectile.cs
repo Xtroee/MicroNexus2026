@@ -15,7 +15,7 @@ public class GreenProjectile : MonoBehaviour
     private int damagePink = 20;
     private int damageOrange = 0;
     private int damageGreen = 20;
-    private int damageBlue = 7;
+    private int damageBlue = 12;
 
     // =========================
     // 🧬 DAMAGE VIRUS

@@ -5,7 +5,13 @@ public class GameData
 {
     public static GameData Data = new GameData();
 
-    private const string UNLOCKED_LEVEL_KEY = "UnlockedLevel";
+    // Level progress is stored per player: "UnlockedLevel_<playerName>". The old single shared
+    // key is only read once, to migrate existing progress to the first player that loads.
+    private const string LEGACY_UNLOCKED_LEVEL_KEY = "UnlockedLevel";
+    private const string UNLOCKED_LEVEL_KEY_PREFIX = "UnlockedLevel_";
+    private const string LAST_USER_KEY = "LastUser"; // same key UserManager uses
+
+    private string progressUser = "Player";
 
     // --- Adventure Progression ---
     public int UnlockedLevel = 1;
@@ -19,11 +25,44 @@ public class GameData
 
     public GameData()
     {
-        // Restore adventure progress saved by a previous session. Everything else in
-        // this class already defaults sensibly for a fresh run (Endless bests at 0,
-        // PlayerName synced separately by UserManager), so only UnlockedLevel needs
-        // an explicit load here.
-        UnlockedLevel = PlayerPrefs.GetInt(UNLOCKED_LEVEL_KEY, 1);
+        // Restore adventure progress saved by a previous session for the last active player
+        // (UserManager re-syncs it on startup and whenever the player is switched). Everything
+        // else in this class already defaults sensibly for a fresh run (Endless bests at 0,
+        // PlayerName synced separately by UserManager).
+        LoadProgressForUser(PlayerPrefs.GetString(LAST_USER_KEY, "Player"));
+    }
+
+    private static string ProgressKey(string user)
+    {
+        return UNLOCKED_LEVEL_KEY_PREFIX + (string.IsNullOrEmpty(user) ? "Player" : user);
+    }
+
+    /// <summary>
+    /// Loads the saved adventure progress of one player into <see cref="UnlockedLevel"/>. A player
+    /// with no saved progress starts at level 1. The first call after updating from the old shared
+    /// save moves that progress to the player being loaded, then removes the shared key.
+    /// </summary>
+    public void LoadProgressForUser(string user)
+    {
+        progressUser = string.IsNullOrEmpty(user) ? "Player" : user;
+        string key = ProgressKey(progressUser);
+
+        if (!PlayerPrefs.HasKey(key) && PlayerPrefs.HasKey(LEGACY_UNLOCKED_LEVEL_KEY))
+        {
+            PlayerPrefs.SetInt(key, PlayerPrefs.GetInt(LEGACY_UNLOCKED_LEVEL_KEY, 1));
+            PlayerPrefs.DeleteKey(LEGACY_UNLOCKED_LEVEL_KEY);
+            PlayerPrefs.Save();
+            Debug.Log($"[GameData] Migrated shared level progress to player '{progressUser}'");
+        }
+
+        UnlockedLevel = PlayerPrefs.GetInt(key, 1);
+    }
+
+    /// <summary>Removes the saved progress of a deleted player.</summary>
+    public void DeleteProgressForUser(string user)
+    {
+        PlayerPrefs.DeleteKey(ProgressKey(user));
+        PlayerPrefs.Save();
     }
 
     private static readonly Regex LevelSceneNamePattern = new Regex(@"^Level (\d+) Stage (\d+)$");
@@ -63,9 +102,9 @@ public class GameData
         if (newUnlocked > UnlockedLevel)
         {
             UnlockedLevel = newUnlocked;
-            PlayerPrefs.SetInt(UNLOCKED_LEVEL_KEY, UnlockedLevel);
+            PlayerPrefs.SetInt(ProgressKey(progressUser), UnlockedLevel);
             PlayerPrefs.Save();
-            Debug.Log($"[GameData] Level {levelInStage} Stage {stageNumber} completed -> UnlockedLevel={UnlockedLevel} (saved)");
+            Debug.Log($"[GameData] Level {levelInStage} Stage {stageNumber} completed -> UnlockedLevel={UnlockedLevel} (saved for '{progressUser}')");
         }
     }
 

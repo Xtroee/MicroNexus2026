@@ -412,7 +412,8 @@ peptidoglikan klasik, punya 2 bentuk (elementary body/reticulate body)
   CDC/WHO/ACG/jurnal, ada di bagian 5 dokumen tsb)
 - `docs/stage-implementation-status.md` (status implementasi gameplay Stage 7-13, placeholder karakter saat ini)
 
-**Belum diimplementasikan ke kode**: matriks 14×14 di atas masih dokumen desain — `Projectile*.cs`/`Capsule*.cs`
-saat ini pakai matriks per-warna yang di-hardcode manual dan cuma cover 6 pasangan lama (bukan hasil konversi
-langsung dari sini). Nyocokin kode ke matriks ini adalah kerjaan terpisah, nunggu karakter/bakteri final Stage
-7-13 selesai gameplay-nya (lihat `stage-implementation-status.md`).
+**Status implementasi (2026-11-18)**: matriks ini sudah dipakai kode. Tujuh bakteri baru dibaca dari
+`AntibioticDamage.cs`; tujuh bakteri lama memakai nilai yang di-hardcode di `*Projectile.cs` per antibiotik
+(Yellow=Amoxicillin, Cream=Cefixime, Blue=Vancomisin, Red=Azitromisin, Green=Ciprofloxacin, Orange=Levofloksasin,
+Black=Cotrimoxazole, Merope=Meropenem), semuanya sudah identik dengan tabel di atas. Kalau matriks diubah, ubah juga
+kelas proyektil terkait.
